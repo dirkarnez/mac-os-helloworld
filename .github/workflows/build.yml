@@ -34,16 +34,13 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          path: |
-            pe-builder
-            main.exe
-          directory: "cmake-build"
-          filename: pe-builder-${{ github.ref_name }}-macos-clang-14.0.0.14000029.zip
+          path: main
+          directory: "src"
+          filename: mac-os-helloworld.zip
 
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: cmake-build/pe-builder-v1.0.0-macos-clang-14.0.0.14000029.zip
+          artifacts: src/mac-os-helloworld.zip
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          
