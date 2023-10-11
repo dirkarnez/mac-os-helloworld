@@ -3,7 +3,7 @@ int main() {
   const unsigned long message_length = sizeof(message) - 1;
 
   asm volatile (
-    "mov $4, %%rax\n"         // Syscall number for write
+    "mov $0x2000004, %%rax\n"         // Syscall number for write
     "mov $1, %%rdi\n"         // File descriptor for stdout
     "mov %0, %%rsi\n"         // Pointer to message
     "mov %1, %%rdx\n"         // Message length
