@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           cd src && \
-          .\main
+          ./main
           
       - name: Archive Release for macOS
         uses: thedoctor0/zip-release@master
