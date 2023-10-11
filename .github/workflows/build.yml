@@ -1,0 +1,49 @@
+name: cpp-cmake-prebuilt-release-actions-workflow
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'c*'
+      
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+            
+      - name: Configure
+        shell: bash
+        # Configure CMake in a 'buildX' subdirectory.
+        # We can't use `build` as `BUILD` is already taken by the bazel build file.
+        # On Mac and Windows this leads to a conflict.
+        run: |
+          cd src && \
+          clang -Wall -Wextra -Werror -o main main.c
+          
+      - name: Run
+        shell: bash
+        run: |
+          cd src && \
+          .\main
+          
+      - name: Archive Release for macOS
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          path: |
+            pe-builder
+            main.exe
+          directory: "cmake-build"
+          filename: pe-builder-${{ github.ref_name }}-macos-clang-14.0.0.14000029.zip
+
+      - name: Release prebuilt
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: cmake-build/pe-builder-v1.0.0-macos-clang-14.0.0.14000029.zip
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
